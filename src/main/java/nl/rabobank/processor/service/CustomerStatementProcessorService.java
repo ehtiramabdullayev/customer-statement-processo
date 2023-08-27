@@ -13,9 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 
 @Service
@@ -46,19 +45,16 @@ public class CustomerStatementProcessorService {
         processor = fileProcessorFactory.createFileProcessor(contentType);
 
         List<CustomerStatement> customerStatements = processor.processFile(file);
+        
+        List<CustomerStatement> endBalanceFailedRecords = new ArrayList<>(customerStatements.stream()
+                .filter(customerStatementValidator.validateEndBalance().negate())
+                .toList());
+        
+        List<CustomerStatement> nonUniqueFailedRecords = customerStatementValidator.findNonUniqueByReference(customerStatements);
 
-        List<CustomerStatement> nonUniqueStatements = customerStatementValidator.findNonUniqueByReference(customerStatements);
-        if (!nonUniqueStatements.isEmpty()) {
-            return customerStatementDtoToResponseMapper.fromDtoToListResponse(nonUniqueStatements);
-        } else {
-            List<CustomerStatement> filteredList = customerStatements.stream()
-                    .filter(customerStatementValidator.validateEndBalance().negate())
-                    .toList();
+        if (!nonUniqueFailedRecords.isEmpty()) endBalanceFailedRecords.addAll(nonUniqueFailedRecords);
 
-            return customerStatementDtoToResponseMapper.fromDtoToListResponse(filteredList);
-        }
-
-
+        return customerStatementDtoToResponseMapper.fromDtoToListResponse(endBalanceFailedRecords);
     }
 
 }

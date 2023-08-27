@@ -27,11 +27,9 @@ public class CustomerStatementValidator {
         Map<Integer, List<CustomerStatement>> groupedByReference = customerStatements.stream()
                 .collect(Collectors.groupingBy(CustomerStatement::getReference));
 
-        List<CustomerStatement> nonUniqueStatements = groupedByReference.values().stream()
+        return groupedByReference.values().stream()
                 .filter(list -> list.size() > 1)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-
-        return nonUniqueStatements;
     }
 }
