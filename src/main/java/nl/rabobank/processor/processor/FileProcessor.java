@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileProcessor<T> {
-    List processFile(MultipartFile file) throws IOException;
+    List<T> processFile(MultipartFile file) throws IOException;
 }
