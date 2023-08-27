@@ -1,6 +1,5 @@
 package nl.rabobank.processor.dto;
 
-
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -1,6 +1,5 @@
 package nl.rabobank.processor.processor.factory;
 
-import nl.rabobank.processor.dto.CustomerStatementCsv;
 import nl.rabobank.processor.exception.UploadTypeNotSupported;
 import nl.rabobank.processor.processor.CsvFileProcessor;
 import nl.rabobank.processor.processor.FileProcessor;
@@ -14,7 +13,6 @@ public class FileProcessorFactoryImpl implements FileProcessorFactory {
 
     public static final String CSV = "text/csv";
     public static final String XML = "application/xml";
-
     private final ApplicationContext applicationContext;
 
     @Autowired

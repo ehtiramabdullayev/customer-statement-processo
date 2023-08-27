@@ -25,6 +25,4 @@ public class CustomerStatementXml {
     @JacksonXmlProperty
     private BigDecimal endBalance;
 
-
-
 }

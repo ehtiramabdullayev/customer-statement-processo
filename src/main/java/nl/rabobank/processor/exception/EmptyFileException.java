@@ -11,7 +11,6 @@ public class EmptyFileException extends RuntimeException implements CustomExcept
         this.status = status;
     }
 
-
     public EmptyFileException(String message) {
         super(message);
     }

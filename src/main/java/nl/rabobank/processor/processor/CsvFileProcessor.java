@@ -15,11 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @Qualifier("csvFileProcessor")
-public class CsvFileProcessor implements FileProcessor<CustomerStatement> {
+public class CsvFileProcessor implements FileProcessor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CustomerStatementCsvToDTOMapper customerStatementCsvToDTOMapper;

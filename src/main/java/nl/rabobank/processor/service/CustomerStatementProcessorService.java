@@ -2,7 +2,6 @@ package nl.rabobank.processor.service;
 
 import nl.rabobank.processor.api.model.response.GenericResponse;
 import nl.rabobank.processor.dto.CustomerStatement;
-import nl.rabobank.processor.dto.CustomerStatementCsv;
 import nl.rabobank.processor.exception.EmptyFileException;
 import nl.rabobank.processor.processor.FileProcessor;
 import nl.rabobank.processor.processor.factory.FileProcessorFactory;
@@ -19,10 +18,10 @@ import java.util.List;
 public class CustomerStatementProcessorService {
     private final Logger logger = LoggerFactory.getLogger(CustomerStatementProcessorService.class);
 
-    private FileProcessor<CustomerStatement> processor;
+    private FileProcessor processor;
     private final FileProcessorFactory fileProcessorFactory;
 
-    public CustomerStatementProcessorService(@Lazy FileProcessor<CustomerStatement> processor,
+    public CustomerStatementProcessorService(@Lazy FileProcessor processor,
                                              FileProcessorFactory fileProcessorFactory) {
         this.processor = processor;
         this.fileProcessorFactory = fileProcessorFactory;
@@ -37,7 +36,8 @@ public class CustomerStatementProcessorService {
         }
 
         processor = fileProcessorFactory.createFileProcessor(contentType);
-        processor.processFile(file);
+        List<CustomerStatement> customerStatements = processor.processFile(file);
+
 
 
         return null;
