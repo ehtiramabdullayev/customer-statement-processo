@@ -22,7 +22,7 @@ public class CustomerStatementXmlToDTOMapper {
     }
 
     public List<CustomerStatement> fromXmlToDtoList(CustomerStatementListXml statementListXml) {
-        if (statementListXml.getRecords()==null) return new ArrayList<>();
+        if (statementListXml.getRecords() == null) return new ArrayList<>();
         return statementListXml.getRecords().stream()
                 .map(this::fromXmlToDTO)
                 .toList();
