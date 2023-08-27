@@ -1,10 +1,11 @@
 package nl.rabobank.processor.service;
 
-import nl.rabobank.processor.api.model.response.GenericResponse;
+import nl.rabobank.processor.api.model.response.FailedRecordListResponse;
 import nl.rabobank.processor.dto.CustomerStatement;
-import nl.rabobank.processor.exception.EmptyFileException;
+import nl.rabobank.processor.mapper.CustomerStatementDtoToResponseMapper;
 import nl.rabobank.processor.processor.FileProcessor;
 import nl.rabobank.processor.processor.factory.FileProcessorFactory;
+import nl.rabobank.processor.validator.CustomerStatementValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
+
 
 @Service
 public class CustomerStatementProcessorService {
@@ -23,38 +24,41 @@ public class CustomerStatementProcessorService {
 
     private FileProcessor processor;
     private final FileProcessorFactory fileProcessorFactory;
+    private final CustomerStatementValidator customerStatementValidator;
+    private final CustomerStatementDtoToResponseMapper customerStatementDtoToResponseMapper;
 
     public CustomerStatementProcessorService(@Lazy FileProcessor processor,
-                                             FileProcessorFactory fileProcessorFactory) {
+                                             FileProcessorFactory fileProcessorFactory,
+                                             CustomerStatementValidator customerStatementValidator,
+                                             CustomerStatementDtoToResponseMapper customerStatementDtoToResponseMapper) {
         this.processor = processor;
         this.fileProcessorFactory = fileProcessorFactory;
+        this.customerStatementValidator = customerStatementValidator;
+        this.customerStatementDtoToResponseMapper = customerStatementDtoToResponseMapper;
     }
 
-    public GenericResponse processCustomerStatement(MultipartFile file) throws IOException {
+    public FailedRecordListResponse processCustomerStatement(MultipartFile file) throws IOException {
         logger.info("inside processCustomerStatement");
         String contentType = file.getContentType();
 
-        if (file.isEmpty()) {
-            throw new EmptyFileException("File can't be empty");
-        }
+        customerStatementValidator.validateCustomerStatementFile(file);
 
         processor = fileProcessorFactory.createFileProcessor(contentType);
+
         List<CustomerStatement> customerStatements = processor.processFile(file);
-        List<CustomerStatement> filteredList = customerStatements.stream()
-//                .filter(filterNonUniqueStatements(customerStatements))
-                .filter(getCustomerStatementPredicate().negate())
-                .toList();
-        System.out.println(filteredList);
 
-        return null;
-    }
+        List<CustomerStatement> nonUniqueStatements = customerStatementValidator.findNonUniqueByReference(customerStatements);
+        if (!nonUniqueStatements.isEmpty()) {
+            return customerStatementDtoToResponseMapper.fromDtoToListResponse(nonUniqueStatements);
+        } else {
+            List<CustomerStatement> filteredList = customerStatements.stream()
+                    .filter(customerStatementValidator.validateEndBalance().negate())
+                    .toList();
 
-    private Predicate<CustomerStatement> filterNonUniqueStatements(List<CustomerStatement> customerStatements) {
-        return statement -> Collections.frequency(customerStatements, statement.getReference()) > 1;
-    }
+            return customerStatementDtoToResponseMapper.fromDtoToListResponse(filteredList);
+        }
 
-    private Predicate<CustomerStatement> getCustomerStatementPredicate() {
-        return statement -> statement.getStartBalance().add(statement.getMutation()).compareTo(statement.getEndBalance()) == 0;
+
     }
 
 }

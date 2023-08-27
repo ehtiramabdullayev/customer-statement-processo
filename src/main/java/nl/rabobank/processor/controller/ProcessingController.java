@@ -1,11 +1,14 @@
 package nl.rabobank.processor.controller;
 
+import nl.rabobank.processor.api.model.response.FailedRecordListResponse;
 import nl.rabobank.processor.service.CustomerStatementProcessorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,11 +26,8 @@ public class ProcessingController {
     }
 
     @PostMapping
-    public ResponseEntity<String> uploadFile(@NonNull @RequestParam("file") MultipartFile file) throws IOException {
+    public FailedRecordListResponse uploadFile(@NonNull @RequestParam("file") MultipartFile file) throws IOException {
         logger.info("Inside uploadFile function");
-        customerStatementProcessorService.processCustomerStatement(file);
-        return null;
-
+        return customerStatementProcessorService.processCustomerStatement(file);
     }
-
 }
