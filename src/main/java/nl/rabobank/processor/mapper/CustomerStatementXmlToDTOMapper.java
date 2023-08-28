@@ -27,5 +27,4 @@ public class CustomerStatementXmlToDTOMapper {
                 .map(this::fromXmlToDTO)
                 .toList();
     }
-
 }

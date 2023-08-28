@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
-import java.util.function.Predicate;
 
 @Service
 @Qualifier("csvFileProcessor")
@@ -36,20 +35,12 @@ public class CsvFileProcessor implements FileProcessor {
                             .withType(CustomerStatementCsv.class)
                             .withIgnoreLeadingWhiteSpace(true)
                             .build();
-            List<CustomerStatementCsv> csvList = csvToBean.stream().filter(exclude().negate()).toList();
+            List<CustomerStatementCsv> csvList = csvToBean.stream().toList();
 
             return customerStatementCsvToDTOMapper.fromCsvToDtoList(csvList);
 
         } catch (IOException e) {
             throw new InvalidUploadException("The CSV file is invalid " + e.getLocalizedMessage());
         }
-    }
-
-    private Predicate<CustomerStatementCsv> exclude() {
-        //Exclude all
-        return customerStatement -> {
-            return false;
-
-        };
     }
 }

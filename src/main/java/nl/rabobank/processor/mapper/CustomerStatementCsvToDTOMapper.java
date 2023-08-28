@@ -24,5 +24,4 @@ public class CustomerStatementCsvToDTOMapper {
                 .map(this::fromCsvToDTO)
                 .toList();
     }
-
 }

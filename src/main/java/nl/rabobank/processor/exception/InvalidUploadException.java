@@ -2,7 +2,7 @@ package nl.rabobank.processor.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class InvalidUploadException extends RuntimeException implements CustomException{
+public class InvalidUploadException extends RuntimeException implements CustomException {
     private HttpStatus status = HttpStatus.BAD_REQUEST;
 
     public InvalidUploadException(String message, HttpStatus status) {
@@ -18,6 +18,4 @@ public class InvalidUploadException extends RuntimeException implements CustomEx
     public HttpStatus getStatus() {
         return status;
     }
-
-
 }

@@ -3,6 +3,7 @@ package nl.rabobank.processor.processor;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import nl.rabobank.processor.dto.CustomerStatement;
 import nl.rabobank.processor.dto.CustomerStatementListXml;
+import nl.rabobank.processor.exception.InvalidUploadException;
 import nl.rabobank.processor.mapper.CustomerStatementXmlToDTOMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class XmlFileProcessor implements FileProcessor {
             CustomerStatementListXml list = xmlMapper.readValue(file.getInputStream(), CustomerStatementListXml.class);
             return customerStatementXmlToDTOMapper.fromXmlToDtoList(list);
         } catch (IOException e) {
-            throw new RuntimeException("Error parsing XML file", e);
+            throw new InvalidUploadException("The XMl file is invalid " + e.getLocalizedMessage());
         }
     }
 }
