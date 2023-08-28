@@ -5,16 +5,18 @@ import nl.rabobank.processor.exception.EmptyFileException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static nl.rabobank.processor.util.Constants.FILE_CANT_BE_EMPTY;
 
 @Component
 public class CustomerStatementValidator {
     public void validateCustomerStatementFile(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new EmptyFileException("File can't be empty");
+            throw new EmptyFileException(FILE_CANT_BE_EMPTY);
         }
     }
 
@@ -22,6 +24,11 @@ public class CustomerStatementValidator {
         return statement -> statement.getStartBalance().add(statement.getMutation()).compareTo(statement.getEndBalance()) == 0;
     }
 
+    public List<CustomerStatement> findNonValidatedEndBalance(List<CustomerStatement> customerStatements) {
+        return customerStatements.stream()
+                .filter(validateEndBalance().negate())
+                .collect(Collectors.toList());
+    }
 
     public List<CustomerStatement> findNonUniqueByReference(List<CustomerStatement> customerStatements) {
         Map<Integer, List<CustomerStatement>> groupedByReference = customerStatements.stream()

@@ -2,17 +2,7 @@ package nl.rabobank.processor.api.model.response;
 
 import java.util.Objects;
 
-public class GenericResponse {
-
-    private final String message;
-
-    public GenericResponse(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+public record GenericResponse(String message) {
 
     @Override
     public boolean equals(Object o) {
@@ -24,8 +14,4 @@ public class GenericResponse {
         return Objects.equals(message, that.message);
     }
 
-    @Override
-    public int hashCode() {
-        return message != null ? message.hashCode() : 0;
-    }
 }

@@ -12,8 +12,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
+
+import static nl.rabobank.processor.util.Constants.*;
 
 @Service
 @Qualifier("csvFileProcessor")
@@ -28,19 +33,21 @@ public class CsvFileProcessor implements FileProcessor {
 
     @Override
     public List<CustomerStatement> processFile(MultipartFile file) {
+        logger.info(CVS_PROCESSING_STARTED);
         try {
-            Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-            CsvToBean<CustomerStatementCsv> csvToBean =
-                    new CsvToBeanBuilder<CustomerStatementCsv>(reader)
-                            .withType(CustomerStatementCsv.class)
-                            .withIgnoreLeadingWhiteSpace(true)
-                            .build();
-            List<CustomerStatementCsv> csvList = csvToBean.stream().toList();
-
+            List<CustomerStatementCsv> csvList;
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                CsvToBean<CustomerStatementCsv> csvToBean =
+                        new CsvToBeanBuilder<CustomerStatementCsv>(reader)
+                                .withType(CustomerStatementCsv.class)
+                                .withIgnoreLeadingWhiteSpace(true)
+                                .build();
+                csvList = csvToBean.stream().toList();
+            }
             return customerStatementCsvToDTOMapper.fromCsvToDtoList(csvList);
-
         } catch (IOException e) {
-            throw new InvalidUploadException("The CSV file is invalid " + e.getLocalizedMessage());
+            logger.error(CVS_PROCESSING_FAILED);
+            throw new InvalidUploadException(CVS_FILE_IS_INVALID + e.getLocalizedMessage());
         }
     }
 }

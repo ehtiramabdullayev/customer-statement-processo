@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static nl.rabobank.processor.util.Constants.INSIDE_SERVICE_METHOD;
 
 
 @Service
@@ -37,18 +37,15 @@ public class CustomerStatementProcessorService {
     }
 
     public FailedRecordListResponse processCustomerStatement(MultipartFile file) {
-        logger.info("inside processCustomerStatement");
-        String contentType = file.getContentType();
+        logger.info(INSIDE_SERVICE_METHOD);
 
         customerStatementValidator.validateCustomerStatementFile(file);
 
-        processor = fileProcessorFactory.createFileProcessor(contentType);
+        processor = fileProcessorFactory.createFileProcessor(file);
 
         List<CustomerStatement> customerStatements = processor.processFile(file);
         
-        List<CustomerStatement> endBalanceFailedRecords = new ArrayList<>(customerStatements.stream()
-                .filter(customerStatementValidator.validateEndBalance().negate())
-                .toList());
+        List<CustomerStatement> endBalanceFailedRecords = customerStatementValidator.findNonValidatedEndBalance(customerStatements);
         
         List<CustomerStatement> nonUniqueFailedRecords = customerStatementValidator.findNonUniqueByReference(customerStatements);
 
