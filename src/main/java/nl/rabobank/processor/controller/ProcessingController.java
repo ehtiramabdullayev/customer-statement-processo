@@ -26,7 +26,7 @@ public class ProcessingController {
     }
 
     @PostMapping
-    public FailedRecordListResponse uploadFile(@NonNull @RequestParam("file") MultipartFile file) throws IOException {
+    public FailedRecordListResponse uploadFile(@NonNull @RequestParam("file") MultipartFile file) {
         logger.info("Inside uploadFile function");
         return customerStatementProcessorService.processCustomerStatement(file);
     }

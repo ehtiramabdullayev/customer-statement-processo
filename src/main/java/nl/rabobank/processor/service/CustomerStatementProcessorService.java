@@ -36,7 +36,7 @@ public class CustomerStatementProcessorService {
         this.customerStatementDtoToResponseMapper = customerStatementDtoToResponseMapper;
     }
 
-    public FailedRecordListResponse processCustomerStatement(MultipartFile file) throws IOException {
+    public FailedRecordListResponse processCustomerStatement(MultipartFile file) {
         logger.info("inside processCustomerStatement");
         String contentType = file.getContentType();
 
