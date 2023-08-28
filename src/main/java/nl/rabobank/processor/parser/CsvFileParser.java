@@ -1,4 +1,4 @@
-package nl.rabobank.processor.processor;
+package nl.rabobank.processor.parser;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -22,12 +22,12 @@ import static nl.rabobank.processor.util.Constants.*;
 
 @Service
 @Qualifier("csvFileProcessor")
-public class CsvFileProcessor implements FileProcessor {
+public class CsvFileParser implements FileParser {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CustomerStatementCsvToDTOMapper customerStatementCsvToDTOMapper;
 
-    public CsvFileProcessor(CustomerStatementCsvToDTOMapper customerStatementCsvToDTOMapper) {
+    public CsvFileParser(CustomerStatementCsvToDTOMapper customerStatementCsvToDTOMapper) {
         this.customerStatementCsvToDTOMapper = customerStatementCsvToDTOMapper;
     }
 

@@ -1,17 +1,10 @@
 package nl.rabobank.processor.api.model.response;
 
-import java.util.Objects;
+import lombok.Data;
 
-public record GenericResponse(String message) {
+@Data
+public class GenericResponse {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        GenericResponse that = (GenericResponse) o;
-
-        return Objects.equals(message, that.message);
-    }
+    private final String message;
 
 }

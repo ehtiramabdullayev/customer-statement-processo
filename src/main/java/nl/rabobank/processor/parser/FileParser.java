@@ -1,10 +1,10 @@
-package nl.rabobank.processor.processor;
+package nl.rabobank.processor.parser;
 
 import nl.rabobank.processor.dto.CustomerStatement;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface FileProcessor {
+public interface FileParser {
     List<CustomerStatement> processFile(MultipartFile file);
 }

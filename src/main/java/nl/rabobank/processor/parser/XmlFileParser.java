@@ -1,4 +1,4 @@
-package nl.rabobank.processor.processor;
+package nl.rabobank.processor.parser;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import nl.rabobank.processor.dto.CustomerStatement;
@@ -18,13 +18,13 @@ import static nl.rabobank.processor.util.Constants.*;
 
 @Service
 @Qualifier("xmlFileProcessor")
-public class XmlFileProcessor implements FileProcessor {
+public class XmlFileParser implements FileParser {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CustomerStatementXmlToDTOMapper customerStatementXmlToDTOMapper;
     private final XmlMapper xmlMapper;
 
-    public XmlFileProcessor(CustomerStatementXmlToDTOMapper customerStatementXmlToDTOMapper,
-                            XmlMapper xmlMapper) {
+    public XmlFileParser(CustomerStatementXmlToDTOMapper customerStatementXmlToDTOMapper,
+                         XmlMapper xmlMapper) {
         this.customerStatementXmlToDTOMapper = customerStatementXmlToDTOMapper;
         this.xmlMapper = xmlMapper;
     }
