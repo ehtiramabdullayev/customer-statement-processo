@@ -32,7 +32,7 @@ public class CsvFileParser implements FileParser {
     }
 
     @Override
-    public List<CustomerStatement> processFile(MultipartFile file) {
+    public List<CustomerStatement> parseFile(MultipartFile file) {
         logger.info(CVS_PROCESSING_STARTED);
         try {
             List<CustomerStatementCsv> csvList;

@@ -30,14 +30,14 @@ public class XmlFileParser implements FileParser {
     }
 
     @Override
-    public List<CustomerStatement> processFile(MultipartFile file) {
+    public List<CustomerStatement> parseFile(MultipartFile file) {
         logger.info(XML_PROCESSING_STARTED);
         try {
             CustomerStatementListXml list = xmlMapper.readValue(file.getInputStream(), CustomerStatementListXml.class);
             return customerStatementXmlToDTOMapper.fromXmlToDtoList(list);
         } catch (IOException e) {
             logger.error(XML_PROCESSING_FAILED);
-            throw new InvalidUploadException(XML_FILE_IS_INVALID + e.getLocalizedMessage());
+            throw new InvalidUploadException(XML_FILE_IS_INVALID);
         }
     }
 }

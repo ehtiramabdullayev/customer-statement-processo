@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FileParser {
-    List<CustomerStatement> processFile(MultipartFile file);
+    List<CustomerStatement> parseFile(MultipartFile file);
 }

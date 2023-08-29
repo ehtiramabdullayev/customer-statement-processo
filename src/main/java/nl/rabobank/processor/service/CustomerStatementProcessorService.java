@@ -43,7 +43,7 @@ public class CustomerStatementProcessorService {
 
         fileParser = fileParserFactory.createFileProcessor(file);
 
-        List<CustomerStatement> parsedFile = fileParser.processFile(file);
+        List<CustomerStatement> parsedFile = fileParser.parseFile(file);
 
         List<CustomerStatement> endBalanceFailedRecords = customerStatementValidator.findNonValidatedEndBalance(parsedFile);
 
