@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 import static nl.rabobank.processor.util.Constants.INSIDE_SERVICE_METHOD;
@@ -43,9 +44,9 @@ public class CustomerStatementProcessorService {
         fileParser = fileParserFactory.createFileProcessor(file);
 
         List<CustomerStatement> parsedFile = fileParser.processFile(file);
-        
+
         List<CustomerStatement> endBalanceFailedRecords = customerStatementValidator.findNonValidatedEndBalance(parsedFile);
-        
+
         List<CustomerStatement> nonUniqueFailedRecords = customerStatementValidator.findNonUniqueByReference(parsedFile);
 
         if (!nonUniqueFailedRecords.isEmpty()) endBalanceFailedRecords.addAll(nonUniqueFailedRecords);
