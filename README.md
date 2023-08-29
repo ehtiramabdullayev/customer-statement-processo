@@ -80,10 +80,14 @@
         </div>
     </div>
 </div>
-<div id="footer">
-    <div id="footer-text">
-        Last updated 2021-02-25 17:04:53 +0100
-    </div>
+
+<div>
+<h1>Instructions</h1>
+    <ul>
+        <li>
+         Please enter http://localhost:8080/swagger-ui/index.html to look at the endpoint
+        </li>
+    </ul>
 </div>
 </body>
 </html>
