@@ -1,5 +1,6 @@
 package nl.rabobank.processor.service;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.rabobank.processor.api.model.response.FailedRecordListResponse;
 import nl.rabobank.processor.dto.CustomerStatement;
 import nl.rabobank.processor.mapper.CustomerStatementDtoToResponseMapper;
@@ -18,8 +19,8 @@ import static nl.rabobank.processor.util.Constants.INSIDE_SERVICE_METHOD;
 
 
 @Service
+@Slf4j
 public class CustomerStatementProcessorService {
-    private final Logger logger = LoggerFactory.getLogger(CustomerStatementProcessorService.class);
 
     private FileParser fileParser;
     private final FileParserFactory fileParserFactory;
@@ -37,20 +38,15 @@ public class CustomerStatementProcessorService {
     }
 
     public FailedRecordListResponse processCustomerStatement(MultipartFile file) {
-        logger.info(INSIDE_SERVICE_METHOD);
-
+        log.info(INSIDE_SERVICE_METHOD);
         customerStatementValidator.validateCustomerStatementFile(file);
-
         fileParser = fileParserFactory.createFileProcessor(file);
 
         List<CustomerStatement> parsedFile = fileParser.parseFile(file);
-
         List<CustomerStatement> endBalanceFailedRecords = customerStatementValidator.findNonValidatedEndBalance(parsedFile);
-
         List<CustomerStatement> nonUniqueFailedRecords = customerStatementValidator.findNonUniqueByReference(parsedFile);
 
         if (!nonUniqueFailedRecords.isEmpty()) endBalanceFailedRecords.addAll(nonUniqueFailedRecords);
-
         return customerStatementDtoToResponseMapper.fromDtoToListResponse(endBalanceFailedRecords);
     }
 

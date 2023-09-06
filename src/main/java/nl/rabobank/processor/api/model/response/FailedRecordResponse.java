@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class FailedRecordResponse {
     private int reference;
-
     private String description;
 }

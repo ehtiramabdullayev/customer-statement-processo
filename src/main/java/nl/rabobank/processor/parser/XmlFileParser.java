@@ -1,12 +1,11 @@
 package nl.rabobank.processor.parser;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import lombok.extern.slf4j.Slf4j;
 import nl.rabobank.processor.dto.CustomerStatement;
 import nl.rabobank.processor.dto.CustomerStatementListXml;
 import nl.rabobank.processor.exception.InvalidUploadException;
 import nl.rabobank.processor.mapper.CustomerStatementXmlToDTOMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,12 +13,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static nl.rabobank.processor.util.Constants.*;
+import static nl.rabobank.processor.util.Constants.XML_FILE_IS_INVALID;
+import static nl.rabobank.processor.util.Constants.XML_PROCESSING_FAILED;
+import static nl.rabobank.processor.util.Constants.XML_PROCESSING_STARTED;
 
+
+@Slf4j
 @Service
 @Qualifier("xmlFileProcessor")
 public class XmlFileParser implements FileParser {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CustomerStatementXmlToDTOMapper customerStatementXmlToDTOMapper;
     private final XmlMapper xmlMapper;
 
@@ -31,12 +33,12 @@ public class XmlFileParser implements FileParser {
 
     @Override
     public List<CustomerStatement> parseFile(MultipartFile file) {
-        logger.info(XML_PROCESSING_STARTED);
+        log.info(XML_PROCESSING_STARTED);
         try {
             CustomerStatementListXml list = xmlMapper.readValue(file.getInputStream(), CustomerStatementListXml.class);
             return customerStatementXmlToDTOMapper.fromXmlToDtoList(list);
         } catch (IOException e) {
-            logger.error(XML_PROCESSING_FAILED);
+            log.error(XML_PROCESSING_FAILED);
             throw new InvalidUploadException(XML_FILE_IS_INVALID);
         }
     }

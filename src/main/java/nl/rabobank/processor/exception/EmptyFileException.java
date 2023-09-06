@@ -14,7 +14,6 @@ public class EmptyFileException extends RuntimeException implements CustomExcept
     public EmptyFileException(String message) {
         super(message);
     }
-
     @Override
     public HttpStatus getStatus() {
         return status;

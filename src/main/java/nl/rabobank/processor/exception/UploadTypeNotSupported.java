@@ -9,7 +9,6 @@ public class UploadTypeNotSupported extends RuntimeException implements CustomEx
         super(message);
         this.status = status;
     }
-
     public UploadTypeNotSupported(String message) {
         super(message);
     }
