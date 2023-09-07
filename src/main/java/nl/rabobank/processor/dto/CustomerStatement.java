@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 @Data
 public class CustomerStatement {
-    private int reference;
+    private long reference;
     private String accountNumber;
     private String description;
     private BigDecimal startBalance;

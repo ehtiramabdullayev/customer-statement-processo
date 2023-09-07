@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class CustomerStatementXml {
     @JacksonXmlProperty(isAttribute = true)
-    private int reference;
+    private long reference;
 
     @JacksonXmlProperty
     private String accountNumber;

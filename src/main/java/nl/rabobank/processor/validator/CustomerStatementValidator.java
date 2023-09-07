@@ -44,7 +44,7 @@ public class CustomerStatementValidator {
     public List<CustomerStatement> findNonUniqueByReference(List<CustomerStatement> customerStatements) {
         log.info(COLLECTING_NON_UNIQUE_RECORDS);
 
-        Map<Integer, List<CustomerStatement>> groupedByReference = customerStatements.stream()
+        Map<Long, List<CustomerStatement>> groupedByReference = customerStatements.stream()
                 .collect(Collectors.groupingBy(CustomerStatement::getReference));
 
         return groupedByReference.values().stream()

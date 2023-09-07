@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @JsonPropertyOrder({"Reference", "Account Number", "Description", "Start Balance", "Mutation", "End Balance"})
 public class CustomerStatementCsv {
     @JsonProperty("Reference")
-    private int reference;
+    private long reference;
 
     @JsonProperty("Account Number")
     private String accountNumber;
