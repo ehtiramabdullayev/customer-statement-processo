@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static nl.rabobank.processor.util.Constants.CVS_FILE_IS_INVALID;
 import static nl.rabobank.processor.util.Constants.CVS_PROCESSING_FAILED;
 import static nl.rabobank.processor.util.Constants.CVS_PROCESSING_STARTED;
@@ -46,10 +46,11 @@ public class CsvFileParser implements FileParser {
                     .withHeader()
                     .withColumnSeparator(CsvSchema.DEFAULT_COLUMN_SEPARATOR);
 
-            try (MappingIterator<CustomerStatementCsv> parsedData = csvMapper.readerWithSchemaFor(CustomerStatementCsv.class)
+            try (MappingIterator<CustomerStatementCsv> mappingIterator = csvMapper
+                    .readerWithSchemaFor(CustomerStatementCsv.class)
                     .with(schema)
-                    .readValues(new String(file.getBytes(), StandardCharsets.UTF_8))) {
-                List<CustomerStatementCsv> csvList = parsedData.readAll();
+                    .readValues(new String(file.getBytes(), UTF_8))) {
+                List<CustomerStatementCsv> csvList = mappingIterator.readAll();
                 return customerStatementCsvToDTOMapper.fromCsvToDtoList(csvList);
             }
         } catch (IOException e) {
