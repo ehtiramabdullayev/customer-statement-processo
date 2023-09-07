@@ -49,8 +49,8 @@ public class CsvFileParser implements FileParser {
             try (MappingIterator<CustomerStatementCsv> parsedData = csvMapper.readerWithSchemaFor(CustomerStatementCsv.class)
                     .with(schema)
                     .readValues(new String(file.getBytes(), StandardCharsets.UTF_8))) {
-
-                return customerStatementCsvToDTOMapper.fromCsvToDtoList(parsedData.readAll());
+                List<CustomerStatementCsv> csvList = parsedData.readAll();
+                return customerStatementCsvToDTOMapper.fromCsvToDtoList(csvList);
             }
         } catch (IOException e) {
             log.error(CVS_PROCESSING_FAILED);

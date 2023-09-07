@@ -51,7 +51,6 @@ public class CsvFileParserTest {
 
     @Test
     public void testParseFile_HasEndBalancedFailedRecord() {
-        // Mocking behavior for the CsvToBean
         String csvContent = "Reference,AccountNumber,Description,StartBalance,Mutation,EndBalance\n" +
                 "12345,NL12ABCD1234567890,Description,100.0,-20.0,5.0";
 
