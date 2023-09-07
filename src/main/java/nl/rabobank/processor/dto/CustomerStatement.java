@@ -3,7 +3,6 @@ package nl.rabobank.processor.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
-
 @Data
 public class CustomerStatement {
     private int reference;

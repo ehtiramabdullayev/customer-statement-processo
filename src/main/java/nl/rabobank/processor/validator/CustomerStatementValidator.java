@@ -29,7 +29,6 @@ public class CustomerStatementValidator {
             throw new EmptyFileException(FILE_CANT_BE_EMPTY);
         }
     }
-
     public Predicate<CustomerStatement> validateEndBalance() {
         log.info(VALIDATING_END_BALANCE);
         return statement -> statement.getStartBalance().add(statement.getMutation()).compareTo(statement.getEndBalance()) == 0;

@@ -1,27 +1,33 @@
 package nl.rabobank.processor.dto;
 
-import com.opencsv.bean.CsvBindByName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
+@JacksonXmlRootElement
+@JsonPropertyOrder({"Reference", "Account Number", "Description", "Start Balance", "Mutation", "End Balance"})
 public class CustomerStatementCsv {
-    @CsvBindByName(column = "Reference")
+    @JsonProperty("Reference")
     private int reference;
 
-    @CsvBindByName(column = "Account Number")
+    @JsonProperty("Account Number")
     private String accountNumber;
 
-    @CsvBindByName(column = "Description")
+    @JsonProperty("Description")
     private String description;
 
-    @CsvBindByName(column = "Start Balance")
+    @JsonProperty("Start Balance")
     private BigDecimal startBalance;
 
-    @CsvBindByName(column = "Mutation")
+    @JsonProperty("Mutation")
     private BigDecimal mutation;
 
-    @CsvBindByName(column = "End Balance")
+    @JsonProperty("End Balance")
     private BigDecimal endBalance;
 }

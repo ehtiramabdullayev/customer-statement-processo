@@ -5,7 +5,6 @@ import nl.rabobank.processor.dto.CustomerStatementCsv;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
 @Component
 public class CustomerStatementCsvToDTOMapper {
     private CustomerStatement fromCsvToDTO(CustomerStatementCsv csv) {

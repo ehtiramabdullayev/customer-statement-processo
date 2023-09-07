@@ -1,7 +1,6 @@
 package nl.rabobank.processor.exception;
 
 import org.springframework.http.HttpStatus;
-
 public class UploadTypeNotSupported extends RuntimeException implements CustomException {
     private HttpStatus status = HttpStatus.BAD_REQUEST;
 

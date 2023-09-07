@@ -21,5 +21,4 @@ public class Constants {
     public static final String COLLECTING_FAILED_END_BALANCE_RECORDS = "Collecting the failed end balance records ";
     public static final String VALIDATING_CUSTOMER_STATEMENT_FILE = "Validating customer statement file ";
     public static final String COLLECTING_NON_UNIQUE_RECORDS = "Collecting the non unique records ";
-
 }

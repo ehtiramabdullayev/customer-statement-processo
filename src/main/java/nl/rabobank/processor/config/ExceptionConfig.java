@@ -1,6 +1,5 @@
 package nl.rabobank.processor.config;
 
-import com.opencsv.exceptions.CsvException;
 import nl.rabobank.processor.api.model.response.GenericResponse;
 import nl.rabobank.processor.exception.CustomException;
 import nl.rabobank.processor.exception.EmptyFileException;
@@ -22,7 +21,6 @@ import static nl.rabobank.processor.util.Constants.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
 public class ExceptionConfig {
-
     @ExceptionHandler(UploadTypeNotSupported.class)
     @ResponseBody
     public ResponseEntity<GenericResponse> handleUploadTypeNotSupported(UploadTypeNotSupported ex) {
@@ -43,14 +41,6 @@ public class ExceptionConfig {
         HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
         return buildResponse(ex.getMessage(), status);
     }
-
-    @ExceptionHandler(CsvException.class)
-    @ResponseBody
-    public ResponseEntity<GenericResponse> handleCsvException(CsvException ex) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        return buildResponse(ex.getMessage(), status);
-    }
-
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody

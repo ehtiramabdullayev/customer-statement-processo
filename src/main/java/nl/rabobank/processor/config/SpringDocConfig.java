@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringDocConfig {
-
     @Bean
     public GroupedOpenApi controllerApi() {
         return GroupedOpenApi.builder()

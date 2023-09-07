@@ -1,6 +1,5 @@
 package nl.rabobank.processor.exception;
 
-
 import org.springframework.http.HttpStatus;
 
 public class EmptyFileException extends RuntimeException implements CustomException{

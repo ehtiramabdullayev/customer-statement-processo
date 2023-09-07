@@ -1,7 +1,7 @@
 package nl.rabobank.processor.dto;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import lombok.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 

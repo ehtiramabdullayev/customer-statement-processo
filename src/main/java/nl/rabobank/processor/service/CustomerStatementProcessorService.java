@@ -7,9 +7,6 @@ import nl.rabobank.processor.mapper.CustomerStatementDtoToResponseMapper;
 import nl.rabobank.processor.parser.FileParser;
 import nl.rabobank.processor.parser.factory.FileParserFactory;
 import nl.rabobank.processor.validator.CustomerStatementValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,21 +14,16 @@ import java.util.List;
 
 import static nl.rabobank.processor.util.Constants.INSIDE_SERVICE_METHOD;
 
-
 @Service
 @Slf4j
 public class CustomerStatementProcessorService {
-
-    private FileParser fileParser;
     private final FileParserFactory fileParserFactory;
     private final CustomerStatementValidator customerStatementValidator;
     private final CustomerStatementDtoToResponseMapper customerStatementDtoToResponseMapper;
 
-    public CustomerStatementProcessorService(@Lazy FileParser fileParser,
-                                             FileParserFactory fileParserFactory,
+    public CustomerStatementProcessorService(FileParserFactory fileParserFactory,
                                              CustomerStatementValidator customerStatementValidator,
                                              CustomerStatementDtoToResponseMapper customerStatementDtoToResponseMapper) {
-        this.fileParser = fileParser;
         this.fileParserFactory = fileParserFactory;
         this.customerStatementValidator = customerStatementValidator;
         this.customerStatementDtoToResponseMapper = customerStatementDtoToResponseMapper;
@@ -40,7 +32,7 @@ public class CustomerStatementProcessorService {
     public FailedRecordListResponse processCustomerStatement(MultipartFile file) {
         log.info(INSIDE_SERVICE_METHOD);
         customerStatementValidator.validateCustomerStatementFile(file);
-        fileParser = fileParserFactory.createFileProcessor(file);
+        FileParser fileParser = fileParserFactory.createFileProcessor(file);
 
         List<CustomerStatement> parsedFile = fileParser.parseFile(file);
         List<CustomerStatement> endBalanceFailedRecords = customerStatementValidator.findNonValidatedEndBalance(parsedFile);
